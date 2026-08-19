@@ -1,0 +1,62 @@
+<h1>My Trips</h1>
+
+<h2>Create Trip</h2>
+
+<div>
+  <label>Title:</label>
+  <input
+    type="text"
+    [(ngModel)]="newTrip.title"
+    placeholder="Trip title"
+  >
+</div>
+
+<div>
+  <label>Start Date:</label>
+  <input
+    type="datetime-local"
+    [(ngModel)]="newTrip.startDate"
+  >
+</div>
+
+<div>
+  <label>End Date:</label>
+  <input
+    type="datetime-local"
+    [(ngModel)]="newTrip.endDate"
+  >
+</div>
+
+<button (click)="addTrip()">
+  Create Trip
+</button>
+
+<hr>
+
+<h2>Available Trips</h2>
+
+<div *ngFor="let trip of trips">
+
+  <h3>{{ trip.title }}</h3>
+
+  <p>
+    Start:
+    {{ trip.startDate }}
+  </p>
+
+  <p>
+    End:
+    {{ trip.endDate }}
+  </p>
+
+  <button (click)="editTrip(trip)">
+    Edit
+  </button>
+
+  <button (click)="deleteTrip(trip.id)">
+    Delete
+  </button>
+
+  <hr>
+
+</div>

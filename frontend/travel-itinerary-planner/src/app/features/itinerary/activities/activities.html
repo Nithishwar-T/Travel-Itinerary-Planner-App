@@ -1,0 +1,315 @@
+<div class="activities-page">
+
+  <!-- HEADER -->
+
+  <div class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        DAILY PLAN
+      </span>
+
+      <h1>
+        Activities
+      </h1>
+
+      <p>
+        Plan what you want to do during this day of your trip.
+      </p>
+
+    </div>
+
+    <div class="day-badge">
+      Day {{ itineraryDayId }}
+    </div>
+
+  </div>
+
+
+  <!-- ADD / EDIT FORM -->
+
+  <section class="activity-form-card">
+
+    <div class="form-heading">
+
+      <div>
+
+        <h2>
+          {{ editingId === null
+            ? 'Add an Activity'
+            : 'Edit Activity'
+          }}
+        </h2>
+
+        <p>
+          {{
+            editingId === null
+              ? 'Add something you want to do during this day.'
+              : 'Update the activity details.'
+          }}
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <form
+      (ngSubmit)="saveActivity()"
+      #activityForm="ngForm"
+    >
+
+      <div class="form-grid">
+
+        <!-- ACTIVITY NAME -->
+
+        <div class="form-group full-width">
+
+          <label for="name">
+            Activity Name
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            name="name"
+            [(ngModel)]="formData.name"
+            placeholder="e.g. Visit Marina Beach"
+            required
+          />
+
+        </div>
+
+
+        <!-- START TIME -->
+
+        <div class="form-group">
+
+          <label for="startTime">
+            Start Time
+          </label>
+
+          <input
+            id="startTime"
+            type="time"
+            name="startTime"
+            [(ngModel)]="formData.startTime"
+          />
+
+        </div>
+
+
+        <!-- END TIME -->
+
+        <div class="form-group">
+
+          <label for="endTime">
+            End Time
+          </label>
+
+          <input
+            id="endTime"
+            type="time"
+            name="endTime"
+            [(ngModel)]="formData.endTime"
+          />
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group full-width">
+
+          <label for="description">
+            Description
+          </label>
+
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="formData.description"
+            rows="4"
+            placeholder="What are you planning to do?"
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="activityForm.invalid || saving"
+        >
+
+          {{
+            saving
+              ? 'Saving...'
+              : editingId === null
+                ? 'Add Activity'
+                : 'Save Changes'
+          }}
+
+        </button>
+
+
+        <button
+          *ngIf="editingId !== null"
+          type="button"
+          class="secondary-button"
+          (click)="resetForm()"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- ACTIVITIES -->
+
+  <section class="activities-section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <h2>
+          Your Activities
+        </h2>
+
+        <p>
+          {{ activities.length }}
+          {{ activities.length === 1 ? 'activity' : 'activities' }}
+          planned
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      *ngIf="loading"
+      class="empty-state"
+    >
+
+      <div class="loader"></div>
+
+      <p>
+        Loading activities...
+      </p>
+
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div
+      *ngIf="!loading && activities.length === 0"
+      class="empty-state"
+    >
+
+      <div class="empty-icon">
+        ✈
+      </div>
+
+      <h3>
+        No activities yet
+      </h3>
+
+      <p>
+        Start planning your day by adding your first activity.
+      </p>
+
+    </div>
+
+
+    <!-- ACTIVITY LIST -->
+
+    <div
+      *ngIf="!loading && activities.length > 0"
+      class="activities-list"
+    >
+
+      <article
+        class="activity-card"
+        *ngFor="let activity of activities"
+      >
+
+        <div class="activity-time">
+
+          <span>
+            {{ activity.startTime | slice:0:5 }}
+          </span>
+
+          <span
+            *ngIf="activity.endTime"
+            class="time-divider"
+          >
+            -
+          </span>
+
+          <span
+            *ngIf="activity.endTime"
+          >
+            {{ activity.endTime | slice:0:5 }}
+          </span>
+
+        </div>
+
+
+        <div class="activity-content">
+
+          <h3>
+            {{ activity.name }}
+          </h3>
+
+          <p
+            *ngIf="activity.description"
+          >
+            {{ activity.description }}
+          </p>
+
+
+          <div class="activity-actions">
+
+            <button
+              type="button"
+              class="edit-button"
+              (click)="editActivity(activity)"
+            >
+              Edit
+            </button>
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="deleteActivity(activity)"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+</div>

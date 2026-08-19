@@ -1,0 +1,108 @@
+<div class="register-page">
+
+  <div class="register-card">
+
+    <div class="brand">
+      <h1>Travel Itinerary Planner</h1>
+      <p>Plan your journey. Create unforgettable memories.</p>
+    </div>
+
+    <div class="register-header">
+      <h2>Create Account</h2>
+      <p>Start planning your next adventure.</p>
+    </div>
+
+    <form (ngSubmit)="register()">
+
+      <div class="form-group">
+
+        <label for="fullName">
+          Full Name
+        </label>
+
+        <input
+          id="fullName"
+          type="text"
+          name="fullName"
+          [(ngModel)]="registerData.fullName"
+          placeholder="Enter your full name"
+          maxlength="100"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="registerData.email"
+          placeholder="Enter your email"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="registerData.password"
+          placeholder="Minimum 6 characters"
+        />
+
+      </div>
+
+      @if (errorMessage) {
+
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+      @if (successMessage) {
+
+        <div class="success-message">
+          {{ successMessage }}
+        </div>
+
+      }
+
+      <button
+        type="submit"
+        [disabled]="isLoading">
+
+        {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+
+      </button>
+
+    </form>
+
+    <div class="login-link">
+
+      <span>Already have an account?</span>
+
+      <button
+        type="button"
+        (click)="goToLogin()">
+
+        Login
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

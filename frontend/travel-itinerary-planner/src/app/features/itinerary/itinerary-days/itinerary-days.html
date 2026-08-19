@@ -1,0 +1,274 @@
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">TRIP ITINERARY</p>
+
+      <h1>Itinerary Days</h1>
+
+      <p class="subtitle">
+        Plan what you want to do each day of your trip.
+      </p>
+    </div>
+
+    <div class="trip-badge">
+      Trip #{{ tripId }}
+    </div>
+
+  </div>
+
+
+  <!-- ADD / EDIT CARD -->
+
+  <div class="form-card">
+
+    <div class="form-header">
+
+      <div>
+        <h2>
+          {{ editingId !== null ? 'Edit Day' : 'Add a Day' }}
+        </h2>
+
+        <p>
+          {{
+            editingId !== null
+              ? 'Update your itinerary details.'
+              : 'Add a new day to your trip.'
+          }}
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="form-grid">
+
+      <!-- DAY NUMBER -->
+
+      <div class="form-group">
+
+        <label>
+          Day Number
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="newDay.dayNumber"
+          min="1"
+        />
+
+      </div>
+
+
+      <!-- DATE -->
+
+      <div class="form-group">
+
+        <label>
+          Date
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="newDay.date"
+        />
+
+      </div>
+
+
+      <!-- NOTES -->
+
+      <div class="form-group full-width">
+
+        <label>
+          Notes
+        </label>
+
+        <textarea
+          [(ngModel)]="newDay.notes"
+          rows="4"
+          placeholder="What are you planning for this day?"
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="form-actions">
+
+      <button
+        class="btn btn-primary"
+        (click)="saveDay()"
+        [disabled]="saving"
+      >
+
+        {{
+          saving
+            ? 'Saving...'
+            : editingId !== null
+              ? 'Update Day'
+              : 'Add Day'
+        }}
+
+      </button>
+
+
+      @if (editingId !== null) {
+
+        <button
+          class="btn btn-secondary"
+          (click)="resetForm()"
+        >
+          Cancel
+        </button>
+
+      }
+
+    </div>
+
+  </div>
+
+
+  <!-- ITINERARY -->
+
+  <div class="section-header">
+
+    <div>
+
+      <h2>Your Itinerary</h2>
+
+      <p>
+        {{ days.length }}
+        {{ days.length === 1 ? 'day' : 'days' }}
+        planned
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  @if (loading) {
+
+    <div class="empty-state">
+
+      <p>Loading your itinerary...</p>
+
+    </div>
+
+  }
+
+
+  <!-- EMPTY -->
+
+  @if (!loading && days.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        ✈
+      </div>
+
+      <h3>No itinerary days yet</h3>
+
+      <p>
+        Start planning your trip by adding your first day.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- DAYS -->
+
+  @if (!loading && days.length > 0) {
+
+    <div class="days-list">
+
+      @for (day of days; track day.id) {
+
+        <div class="day-card">
+
+          <div class="day-number">
+
+            <span>
+              DAY
+            </span>
+
+            <strong>
+              {{ day.dayNumber }}
+            </strong>
+
+          </div>
+
+
+          <div class="day-content">
+
+            <div class="day-top">
+
+              <div>
+
+                <h3>
+                  Day {{ day.dayNumber }}
+                </h3>
+
+                <p class="date">
+                  {{ day.date | date:'EEEE, MMMM d, yyyy' }}
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <p class="notes">
+              {{ day.notes }}
+            </p>
+
+
+            <div class="day-actions">
+
+              <button
+                class="btn btn-small"
+                (click)="editDay(day)"
+              >
+                Edit
+              </button>
+
+              <button
+                class="btn btn-small btn-danger"
+                (click)="deleteDay(day.id)"
+              >
+                Delete
+              </button>
+
+              <button
+  type="button"
+  class="activities-button"
+  [routerLink]="['/activities', day.id]"
+>
+  Activities
+</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>
